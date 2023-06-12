@@ -6,11 +6,11 @@
 mks_spindle_t mks_spindle;
 void spindle_check_init(void) { 
     /*
-        - 默认激光头空闲关使能
-        - 默认起始时间0
-        - 默认结束时间0
-        - 默认等待时间30s
-    */
+         - Default laser head idle off enable
+         - Default start time 0
+         - Default end time 0
+         - The default waiting time is 30s   
+         */
     mks_spindle.spindle_status = sp_none;
     mks_spindle.tick_start = 0;
     mks_spindle.tick_end = 0;
@@ -44,7 +44,7 @@ void spindle_check(void) {
             if(stepper_idle) {
                 mks_spindle.tick_end = esp_timer_get_time();
 
-                if(mks_spindle.tick_end <= mks_spindle.tick_start) {   // 时间防止溢出
+                if(mks_spindle.tick_end <= mks_spindle.tick_start) {   // Time prevents overflow
                     mks_spindle.tick_start = esp_timer_get_time();
                 }
                 else if((mks_spindle.tick_end - mks_spindle.tick_start) > mks_spindle.out_time) {
@@ -52,14 +52,14 @@ void spindle_check(void) {
                     mks_spindle.spindle_status = sp_end;
                 }
             }else {
-                mks_spindle.spindle_status = sp_begin; // 重头开始
+                mks_spindle.spindle_status = sp_begin; // start over
             }
         break;
 
         case sp_end:
             mks_spindle.tick_start = 0;
             mks_spindle.tick_end = 0;
-            mks_spindle.spindle_status = sp_begin; // 重头开始
+            mks_spindle.spindle_status = sp_begin; // start over
         break;
     }
 }
